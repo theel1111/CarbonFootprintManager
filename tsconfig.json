@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                // 支援最新語法
+    "module": "ESNext",                // 模組系統，Vite 支援 ESM
+    "lib": ["DOM", "ESNext"],          // 支援瀏覽器 API + 現代 JS
+    "jsx": "react-jsx",                // 使用新的 JSX runtime (React 17+)
+    "moduleResolution": "node",        // 模組解析方式
+    "resolveJsonModule": true,         // 允許匯入 .json
+    "esModuleInterop": true,           // 匯入 CommonJS 模組
+    "allowSyntheticDefaultImports": true,
+    "strict": true,                    // 啟用嚴格型別檢查
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,              // 跳過 node_modules 的型別檢查
+    "isolatedModules": true            // 每個檔案可以獨立轉譯（Vite 需要）
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
