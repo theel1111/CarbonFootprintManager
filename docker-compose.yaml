@@ -1,0 +1,19 @@
+services:
+  backend:
+    restart: "always"
+    build: ./backend
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./backend:/app
+    environment: 
+      FLASK_DEBUG: 1  
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/front_app:/user/src/app
+    depends_on:
+      - backend
