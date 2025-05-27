@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import { useTranslation } from "react-i18next";
+import { FaGlobe } from 'react-icons/fa';
 
 const lightTheme = {
     background: "#f7f9fc",
@@ -35,7 +37,9 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
+    position: relative;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     align-items: center;
     padding: 12px;
@@ -43,8 +47,13 @@ const Header = styled.div`
 `;
 
 const Title = styled.h2`
-    margin: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
     font-size: 18px;
+    align-items: center;
+    pointer-events: none; // 避免擋到右側按鈕
     color: ${(props) => props.theme.textPrimary};
 `;
 
@@ -54,6 +63,12 @@ const CloseButton = styled.button`
     font-size: 16px;
     color: ${(props) => props.theme.textPrimary};
     cursor: pointer;
+`;
+
+const RightButtons = styled.div`
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
 `;
 
 const ThemeToggle = styled.button`
@@ -131,6 +146,8 @@ const ProfilePage: React.FC = () => {
     const [theme, setTheme] = useState("light");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const { t, i18n } = useTranslation('profile');
+
     const handleAvatarClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
@@ -148,26 +165,37 @@ const ProfilePage: React.FC = () => {
         setTheme((prev) => (prev === "light" ? "dark" : "light"));
     };
 
+    const toggleLanguage = () => {
+        const newLang = i18n.language === 'en' ? 'zh' : 'en';
+        i18n.changeLanguage(newLang);
+    };
+
     return (
         <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
             <GlobalStyle />
             <Container>
                 <Header>
-                    <CloseButton>close</CloseButton>
-                    <Title>Profile</Title>
-                    <ThemeToggle onClick={toggleTheme}>
-                        {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-                    </ThemeToggle>
+                    <CloseButton>{t('close')}</CloseButton>
+                    <Title>{t('title')}</Title>
+                    <RightButtons>
+                        <ThemeToggle onClick={toggleLanguage} title="Change Language">
+                            <FaGlobe size={18} />
+                        </ThemeToggle>
+
+                        <ThemeToggle onClick={toggleTheme}>
+                            {theme === "light" ? "🌙Dark" : "☀️Light"}
+                        </ThemeToggle>
+                    </RightButtons>
                 </Header>
 
                 <ContentContainer>
-                    <Label>Profile picture</Label>
+                    <Label>{t('profile_picture')}</Label>
                     <Avatar
                         src={avatarUrl || "https://via.placeholder.com/80"}
                         alt="Avatar"
                     />
                     <Button onClick={handleAvatarClick}>
-                        Change Profile picture
+                        {t('change_profile_picture')}
                     </Button>
                     <HiddenFileInput
                         type="file"
@@ -176,21 +204,21 @@ const ProfilePage: React.FC = () => {
                         onChange={handleFileChange}
                     />
 
-                    <Label>username</Label>
+                    <Label>{t('username')}</Label>
                     <Input
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
 
-                    <Label>Email</Label>
+                    <Label>{t('email')}</Label>
                     <div>example@gmail.com</div>
 
-                    <Label>Password</Label>
-                    <Button>Change Password</Button>
+                    <Label>{t('password')}</Label>
+                    <Button>{t('change_password')}</Button>
                 </ContentContainer>
 
-                <SignOutButton>Sign Out</SignOutButton>
+                <SignOutButton>{t('sign_out')}</SignOutButton>
             </Container>
         </ThemeProvider>
     );

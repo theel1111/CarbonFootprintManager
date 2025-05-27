@@ -1,0 +1,11 @@
+{
+        "title": "Profile",
+        "close": "Close",
+        "profile_picture": "Profile Picture",
+        "change_profile_picture": "Change Profile Picture",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "sign_out": "Sign Out",
+        "change_password": "Change Password"
+}
