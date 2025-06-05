@@ -1,29 +1,55 @@
-from firebase_admin import firestore
-from firestore import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, create_refresh_token
+from database import get_db
+
 
 USER_COLLECTION = 'users'
 
 
 def create_user(account, password, user_name):
     hashed_password = generate_password_hash(password)
-    data = {
-        'account': account,
-        'password': hashed_password,
-        'user_name': user_name,
-        'created_at': firestore.SERVER_TIMESTAMP
-    }
-    doc_ref = db.collection(USER_COLLECTION).add(data)
-    return None
+    with get_db() as conn:
+        cursor = conn.cursor(dictionary=True)
+        sql = "INSERT INTO users (account, password, user_name) VALUES (%s, %s, %s)"
+        values = (account, hashed_password, user_name)
+        cursor.execute(sql, values)
+        conn.commit()
+        return cursor.lastrowid
 
 
 def get_user_by_account(account):
-    docs = db.collection(USER_COLLECTION).where('account', '==', account).limit(1).stream()
-    for doc in docs:
-        user = doc.to_dict()
-        user['id'] = doc.id
-        return user
-    return None
+    with get_db() as conn:
+        cursor = conn.cursor(dictionary=True)
+        sql = "SELECT * FROM users WHERE account = %s"
+        cursor.execute(sql, (account,))
+        return cursor.fetchone()
 
 def verify_password(stored_password, provided_password):
     return check_password_hash(stored_password, provided_password)
+
+def generate_tokens(user_id, account):
+    """Generate access and refresh tokens for the user"""
+    access_token = create_access_token(
+        identity=user_id,
+        additional_claims={
+            'account': account
+        }
+    )
+    refresh_token = create_refresh_token(
+        identity=user_id,
+        additional_claims={
+            'account': account
+        }
+    )
+    return {
+        'access_token': access_token,
+        'refresh_token': refresh_token
+    }
+
+def get_user_by_id(user_id):
+    """Get user by their ID"""
+    with get_db() as conn:
+        cursor = conn.cursor(dictionary=True)
+        sql = "SELECT * FROM users WHERE id = %s"
+        cursor.execute(sql, (user_id,))
+        return cursor.fetchone()

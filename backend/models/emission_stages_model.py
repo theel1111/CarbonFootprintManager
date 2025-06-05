@@ -1,40 +1,41 @@
-from firebase_admin import firestore
-from firestore import db
+from backend.database import get_db
 
 STAGE_COLLECTION = 'emission_stages'
 
 def create_stage(name):
-    data = {
-        'name': name,
-        'created_at': firestore.SERVER_TIMESTAMP
-    }
-    doc_ref = db.collection(STAGE_COLLECTION).add(data)
-    return doc_ref[1].id
+    with get_db() as conn:
+        cursor = conn.cursor(dictionary=True)
+        sql = "INSERT INTO emission_stages (name) VALUES (%s)"
+        cursor.execute(sql, (name,))
+        conn.commit()
+        return cursor.lastrowid
 
 def get_stage(stage_id):
-    doc_ref = db.collection(STAGE_COLLECTION).document(stage_id)
-    doc = doc_ref.get()
-    if doc.exists:
-        stage = doc.to_dict()
-        stage['id'] = doc.id
-        return stage
-    return None
+    with get_db() as conn:
+        cursor = conn.cursor(dictionary=True)
+        sql = "SELECT * FROM emission_stages WHERE id = %s"
+        cursor.execute(sql, (stage_id,))
+        return cursor.fetchone()
 
 def get_all_stages():
-    docs = db.collection(STAGE_COLLECTION).stream()
-    stages = []
-    for doc in docs:
-        stage = doc.to_dict()
-        stage['id'] = doc.id
-        stages.append(stage)
-    return stages
+    with get_db() as conn:
+        cursor = conn.cursor(dictionary=True)
+        sql = "SELECT * FROM emission_stages"
+        cursor.execute(sql)
+        return cursor.fetchall()
 
 def update_stage(stage_id, data):
-    doc_ref = db.collection(STAGE_COLLECTION).document(stage_id)
-    doc_ref.update(data)
-    return True
+    with get_db() as conn:
+        cursor = conn.cursor()
+        sql = "UPDATE emission_stages SET name = %s WHERE id = %s"
+        cursor.execute(sql, (data['name'], stage_id))
+        conn.commit()
+        return True
 
 def delete_stage(stage_id):
-    doc_ref = db.collection(STAGE_COLLECTION).document(stage_id)
-    doc_ref.delete()
-    return True 
+    with get_db() as conn:
+        cursor = conn.cursor()
+        sql = "DELETE FROM emission_stages WHERE id = %s"
+        cursor.execute(sql, (stage_id,))
+        conn.commit()
+        return True 
