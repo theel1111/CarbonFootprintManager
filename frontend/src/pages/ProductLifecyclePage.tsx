@@ -154,11 +154,6 @@ export default function ProductLifecyclePage() {
       steps: ["回收", "焚化", "掩埋"],
       extras: ["能源資源"],
     },
-    {
-      name: "儲存",
-      steps: ["儲存"],
-      extras: ["能源資源"],
-    },
   ];
 
   /* 共用 Stage 渲染 */
