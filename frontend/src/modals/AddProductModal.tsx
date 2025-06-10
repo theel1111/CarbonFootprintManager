@@ -1,7 +1,6 @@
 // src/modals/AddProductModal.tsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useTranslation } from 'react-i18next';
 
 const Overlay = styled.div`
   position: fixed;
@@ -14,49 +13,62 @@ const Overlay = styled.div`
 `;
 
 const ModalBox = styled.div`
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
   width: 90%;
-  max-width: 360px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 `;
 
 const Title = styled.h2`
-  margin-bottom: 12px;
-  font-size: 18px;
-  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+const Label = styled.label`
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+  display: block;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 10px 12px;
   font-size: 16px;
-  margin-bottom: 12px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
 `;
 
 const ButtonRow = styled.div`
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
+  justify-content: space-between;
+  margin-top: 8px;
 `;
 
-const Button = styled.button`
-  padding: 8px 14px;
-  font-size: 14px;
-  border-radius: 6px;
+const Button = styled.button<{ primary?: boolean }>`
+  flex: 1;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
   border: none;
+  margin: 0 4px;
   cursor: pointer;
+  background: ${({ primary }) => (primary ? '#007bff' : '#e0e0e0')};
+  color: ${({ primary }) => (primary ? '#fff' : '#333')};
 
-  &:first-child {
-    background: #e0e0e0;
-  }
-
-  &:last-child {
-    background: #007bff;
-    color: #fff;
+  &:hover {
+    opacity: 0.9;
   }
 `;
 
@@ -66,34 +78,33 @@ interface Props {
 }
 
 export default function AddProductModal({ onClose, onSubmit }: Props) {
-  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
 
   const handleSubmit = () => {
-    if (name && category) {
-      onSubmit(name, category);
-      onClose();
+    if (!name || !category) {
+      alert('請填寫完整的產品名稱與分類');
+      return;
     }
+    onSubmit(name, category);
+    onClose();
   };
 
   return (
     <Overlay>
       <ModalBox>
-        <Title>{t('modal.addProduct')}</Title>
-        <Input
-          placeholder={t('modal.productName')}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Input
-          placeholder={t('modal.productCategory')}
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
+        <Title>新增產品</Title>
+        <div>
+          <Label>產品種類</Label>
+          <Input
+            placeholder="請輸入產品種類"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
         <ButtonRow>
-          <Button onClick={onClose}>{t('modal.cancel')}</Button>
-          <Button onClick={handleSubmit}>{t('modal.confirm')}</Button>
+          <Button onClick={onClose}>取消</Button>
+          <Button primary onClick={handleSubmit}>確認</Button>
         </ButtonRow>
       </ModalBox>
     </Overlay>

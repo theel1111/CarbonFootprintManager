@@ -36,7 +36,7 @@ const Title = styled.h2`
 const RecordCard = styled.div`
   background: #f9f9f9;
   border-radius: 8px;
-  padding: 8px;
+  padding: 10px;
   margin-bottom: 12px;
   display: flex;
   align-items: flex-start;
@@ -57,13 +57,14 @@ const StarButton = styled.button`
 `;
 
 const Label = styled.div`
-  font-size: 14px;
+  font-size: 12px;
   color: #888;
 `;
 
 const Value = styled.div`
   font-size: 16px;
   font-weight: 500;
+  padding: 4px;
 `;
 
 const CloseButton = styled.button`
@@ -78,9 +79,9 @@ const CloseButton = styled.button`
 `;
 
 const mockRecords = [
-  { id: 1, name: "紅茶", updatedAt: "2024-01-01", pinned: true },
-  { id: 2, name: "紅茶", updatedAt: "2024-02-15", pinned: false },
-  { id: 3, name: "紅茶", updatedAt: "2024-03-05", pinned: false },
+  { id: 1, name: "2025-春茶", updatedAt: "2025-01-01", pinned: true },
+  { id: 2, name: "2024-春茶", updatedAt: "2024-02-15", pinned: false },
+  { id: 3, name: "2023-春茶", updatedAt: "2024-03-05", pinned: false },
 ];
 
 interface ProductDetailModalProps {
@@ -120,7 +121,7 @@ export default function ProductDetailModal({
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>×</CloseButton>
         <Title>
-          {t("productDetail.title")} - {productName}
+          {t("種類")} - {productName}
         </Title>
         {sortedRecords.map((record) => (
           <RecordCard key={record.id} onClick={() => handleNavigate(record.id)}>
@@ -133,11 +134,11 @@ export default function ProductDetailModal({
               {record.pinned ? "⭐" : "⚪"}
             </StarButton>
             <InfoColumn>
-              <Label>{t("record.id")}</Label>
+              <Label>{t("ID")}</Label>
               <Value>#{record.id}</Value>
-              <Label>{t("record.name")}</Label>
+              <Label>{t("名稱")}</Label>
               <Value>{record.name}</Value>
-              <Label>{t("record.updatedAt")}</Label>
+              <Label>{t("紀錄時間")}</Label>
               <Value>{record.updatedAt}</Value>
             </InfoColumn>
           </RecordCard>
