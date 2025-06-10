@@ -81,7 +81,7 @@ export default function Header({ showBackButton = true }: HeaderProps) {
         )}
       </Section>
 
-      <CenterTitle>{t('header.home')}</CenterTitle>
+      <CenterTitle>{t('首頁')}</CenterTitle>
 
       <Section style={{ justifyContent: 'flex-end', gap: '12px' }}>
         <IconButton onClick={toggleLanguage}>🌐</IconButton>
