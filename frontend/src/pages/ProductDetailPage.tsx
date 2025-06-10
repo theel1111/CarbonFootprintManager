@@ -42,7 +42,6 @@ const AddButton = styled.button`
 interface Product {
   id: string;
   name: string;
-  category: string;
   recordCount: number;
   isFavorite: boolean;
   favoriteTimestamp?: number;
@@ -50,9 +49,9 @@ interface Product {
 
 export default function ProductListPage() {
   const [products, setProducts] = useState<Product[]>([
-    { id: '1', name: '紅茶', category: '飲品', recordCount: 3, isFavorite: false },
-    { id: '2', name: '環保杯', category: '用品', recordCount: 5, isFavorite: true, favoriteTimestamp: Date.now() - 10000 },
-    { id: '3', name: '燕麥棒', category: '食品', recordCount: 1, isFavorite: false }
+    { id: '1', name: '紅茶', recordCount: 3, isFavorite: false },
+    { id: '2', name: '烏龍茶',  recordCount: 5, isFavorite: true, favoriteTimestamp: Date.now() - 10000 },
+    { id: '3', name: '鐵觀音', recordCount: 1, isFavorite: false }
   ]);
 
   const [showModal, setShowModal] = useState(false);
@@ -64,7 +63,6 @@ export default function ProductListPage() {
     const newProduct: Product = {
       id: Date.now().toString(),
       name,
-      category,
       recordCount: 0,
       isFavorite: false,
     };
@@ -116,7 +114,6 @@ export default function ProductListPage() {
           >
             <ProductCard
               name={product.name}
-              category={product.category}
               recordCount={product.recordCount}
               isFavorite={product.isFavorite}
               onToggleFavorite={() => handleToggleFavorite(product.id)}
