@@ -85,7 +85,7 @@ export default function ProductCard({
         </Actions>
       </TopRow>
       <div style={{ marginTop: '12px', fontSize: '14px', color: '#666' }}>
-        {t('content.records')}: {recordCount}
+        {t('碳足跡紀錄表')}: {recordCount}
       </div>
     </Card>
   );

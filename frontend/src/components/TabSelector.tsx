@@ -39,10 +39,10 @@ export default function TabSelector({ activeTab, onChange }: TabSelectorProps) {
   return (
     <TabContainer>
       <TabButton $active={activeTab === 'products'} onClick={() => onChange('products')}>
-        {t('tabs.products')}
+        {t('產品列表')}
       </TabButton>
       <TabButton $active={activeTab === 'records'} onClick={() => onChange('records')}>
-        {t('tabs.records')}
+        {t('碳足跡紀錄表')}
       </TabButton>
     </TabContainer>
   );

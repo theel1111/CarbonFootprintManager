@@ -42,7 +42,7 @@ export default function HomePage() {
           <ProductList />
         ) : (
           <div style={{ padding: '16px' }}>
-            🌿 {t('content.records')}（{t('content.comingSoon')}）
+            🌿 {t('碳足跡紀錄表')}（{t('尚未建立')}）
           </div>
         )}
       </Section>
