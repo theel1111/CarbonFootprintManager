@@ -2,7 +2,7 @@ FROM python:3.13-alpine
 
 WORKDIR /app
 
-# Install dependencies using apk instead of apt-get
+# Install dependencies 
 RUN apk update && apk add --no-cache \
     build-base \
     mariadb-dev \
@@ -18,8 +18,6 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 RUN apk add --no-cache mysql-client
-
-
 
 # Copy the rest of the backend code
 COPY . .

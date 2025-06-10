@@ -31,8 +31,9 @@ services:
       - ./backend:/app
     command: /bin/sh -c "python scripts/init_db.py && python -m flask run --host=0.0.0.0"
     restart: always
+
   nginx:
-    image: nginx:latest
+    image: nginx:stable-alpine3.21
     container_name: nginx
     ports:
       - "80:80"
