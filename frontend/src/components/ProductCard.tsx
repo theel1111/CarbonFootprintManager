@@ -52,7 +52,6 @@ const IconButton = styled.button`
 
 interface ProductCardProps {
   name: string;
-  category: string;
   recordCount: number;
   isFavorite: boolean;
   onToggleFavorite: () => void;
@@ -62,7 +61,6 @@ interface ProductCardProps {
 
 export default function ProductCard({
   name,
-  category,
   recordCount,
   isFavorite,
   onToggleFavorite,
@@ -76,7 +74,6 @@ export default function ProductCard({
       <TopRow>
         <div>
           <Name>{name}</Name>
-          <Category>{category}</Category>
         </div>
         <Actions>
           <IconButton onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}>

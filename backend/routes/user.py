@@ -7,7 +7,7 @@ from models.user_model import (
 
 user_bp = Blueprint('user', __name__)
 
-@user_bp.route('/auth/register', methods=['POST'])
+@user_bp.route('/register', methods=['POST'])
 def register():
     data = request.json
     account = data.get('account')
@@ -30,7 +30,7 @@ def register():
         "refresh_token": tokens['refresh_token']
     }), 201
 
-@user_bp.route('/auth/login', methods=['POST'])
+@user_bp.route('/login', methods=['POST'])
 def login():
     data = request.json
     if data is None:
@@ -53,7 +53,7 @@ def login():
     else:
         return jsonify({"error": "Invalid credentials"}), 401
 
-@user_bp.route('/auth/me', methods=['GET'])
+@user_bp.route('/me', methods=['GET'])
 @jwt_required()
 def get_current_user():
     current_user_id = get_jwt_identity()
@@ -67,7 +67,7 @@ def get_current_user():
     return jsonify(user), 200
 
 # Test route to verify JWT is working
-@user_bp.route('/auth/test', methods=['GET'])
+@user_bp.route('/test', methods=['GET'])
 @jwt_required()
 def test_auth():
     current_user_id = get_jwt_identity()

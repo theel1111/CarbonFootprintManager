@@ -29,7 +29,7 @@ export default function HomePage() {
 
   return (
     <PageWrapper>
-      <Header />
+      <Header showBackButton={false} />
       <TabSelector activeTab={activeTab} onChange={setActiveTab} />
       <Section>
         {activeTab === 'products' ? (

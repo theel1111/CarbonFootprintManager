@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 
-const HEADER_HEIGHT = 36;           // 統一高度，等等頁面要用來補位
+const HEADER_HEIGHT = 36;
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -13,27 +13,30 @@ const HeaderContainer = styled.header`
   transform: translateX(-50%);
   width: 100%;
   max-width: 480px;
-
   height: ${HEADER_HEIGHT}px;
   z-index: 1000;
 
   background-color: #fff;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  justify-content: space-between;
+  padding: 0 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 `;
 
-const LeftActions = styled.div`
-  display: flex;
-  gap: 12px;
-`;
-
-const RightActions = styled.div`
+const Section = styled.div`
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 12px;
+`;
+
+const CenterTitle = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
 `;
 
 const IconButton = styled.button`
@@ -56,24 +59,34 @@ const Avatar = styled.img`
   cursor: pointer;
 `;
 
-export default function Header() {
+type HeaderProps = {
+  showBackButton?: boolean;
+};
+
+export default function Header({ showBackButton = true }: HeaderProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh');
   };
 
   return (
     <HeaderContainer>
-      <LeftActions>
-        <IconButton onClick={() => navigate(-1)}>←</IconButton>
-        <IconButton onClick={() => navigate('/')}>{t('header.home')}</IconButton>
-      </LeftActions>
+      <Section style={{ justifyContent: 'flex-start' }}>
+        {showBackButton ? (
+          <IconButton onClick={() => navigate(-1)}>⬅️</IconButton>
+        ) : (
+          <IconButton style={{ visibility: 'hidden' }}>⬅️</IconButton>
+        )}
+      </Section>
 
-      <RightActions>
+      <CenterTitle>{t('header.home')}</CenterTitle>
+
+      <Section style={{ justifyContent: 'flex-end', gap: '12px' }}>
         <IconButton onClick={toggleLanguage}>🌐</IconButton>
         <Avatar src="/assets/user-avatar.png" alt="User Avatar" />
-      </RightActions>
+      </Section>
     </HeaderContainer>
   );
 }
