@@ -29,18 +29,15 @@ services:
       - "5001:5000"
     volumes:
       - ./backend:/app
-    command: /bin/sh -c "python scripts/init_db.py && python -m flask run --host=0.0.0.0"
+      - ./scripts:/app/scripts
+    command: >
+      sh -c "
+        python /app/scripts/init_db.py &&
+        python run.py
+      "
     restart: unless-stopped
 
-  nginx:
-    image: nginx:stable-alpine3.21 # 
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - backend
 
 volumes:
   mysql_data:
+

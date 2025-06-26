@@ -11,7 +11,6 @@ RUN apk update && apk add --no-cache \
     libffi-dev \
     && rm -rf /var/cache/apk/*
 
-# Copy requirements first for better caching
 COPY requirements.txt .
 
 # Install Python dependencies
@@ -20,10 +19,10 @@ RUN pip install -r requirements.txt
 RUN apk add --no-cache mysql-client
 
 # Copy the rest of the backend code
-COPY . .
+COPY . . 
 
 # Set environment variables
-ENV FLASK_APP=app.py
+ENV FLASK_APP=run.py
 ENV FLASK_ENV=development
 ENV FLASK_DEBUG=1
 

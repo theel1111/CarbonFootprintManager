@@ -1,10 +1,25 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token
-from database import get_db
+import mysql.connector
+import os
+from contextlib import contextmanager
+from config import Config
 
+@contextmanager
+def get_db():
+    """Context manager for database connections"""
+    conn = None
+    try:
+        conn = mysql.connector.connect(**DB_CONFIG)
+        yield conn
+    except mysql.connector.Error as e:
+        print(f"Error connecting to MySQL: {e}")
+        raise
+    finally:
+        if conn and conn.is_connected():
+            conn.close()
 
 USER_COLLECTION = 'users'
-
 
 def create_user(account, password, user_name):
     hashed_password = generate_password_hash(password)
@@ -15,7 +30,6 @@ def create_user(account, password, user_name):
         cursor.execute(sql, values)
         conn.commit()
         return cursor.lastrowid
-
 
 def get_user_by_account(account):
     with get_db() as conn:
